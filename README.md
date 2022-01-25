@@ -1,6 +1,6 @@
 # First Full Stack Blockchain
-App to 
-- View live: []()
+App uses two contracts deployed to Ropsten TestNet (Greeter and SimpleStorage) and displays frontend to use the contracts. Only my wallet address has been AllowListed in Infura
+- View live: [https://first-nextjs-hardhat.vercel.app/](https://first-nextjs-hardhat.vercel.app/)
 
 ## Table of Contents
 - [Technologies](#technologies)
@@ -8,11 +8,11 @@ App to
 - [Implementation](#implementation)
 
 ## Technologies
-- Hardhat.js
-- Ether.js
-- Next.js - React framework with Routing, & serverless functions
+- Hardhat.js - Ethereum development environment
+- Ether.js - library to allow developers to interact with Ethereum blockchain (necessary for hardhat)
+- Next.js - React framework with default Routing and serverless functions (internally uses Node.js server)
 - Chakra UI - component library
-- Vercel - hosting platform
+- Vercel - hosting platform for JAMStack apps (frontend with serverless functions)
 
 ## Local Setup Commands
 - Compile smart contract - ```npx hardhat compile```
