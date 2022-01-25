@@ -44,10 +44,18 @@ App to
 - npx hardhat node
 - npx hardhat run scripts/deploy.js --network localhost
 - npm run dev
-- Added dotenv ENV file with Infura private key
-- Added Infura private key to hardhat.config.js to connect to ropsten
+- npm i dotenv
+- Add dotenv config to hardhat.config.js
+- Created Ropsten project using tutorial and saved project ID to .env [https://blog.infura.io/getting-started-with-infura-28e41844cc89/](https://blog.infura.io/getting-started-with-infura-28e41844cc89/)
+  - Add Metamask account wallet address to "CONTRACT ADDRESSES" AllowList
+  - Validate project is connected to Mainnet with curl call from WSL (NOTE - curl command did not work on Windows due to \" issue)
+    - Mainnet - ```curl https://mainnet.infura.io/v3/{INFURA_PROJECT_ID} -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params": [],"id":1}'```
+    - Ropsten - ```curl https://ropsten.infura.io/v3/{INFURA_PROJECT_ID} -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params": [],"id":1}'```
+- Exported private key from Metamask account and Infura project ID into .env file for dotenv
+- Used Infura project ID and Metamask Account private to hardhat.config.js
 - npx hardhat run scripts/deploy.js --network ropsten
 - Verified deployed contract in Etherscan Ropsten Testnet Explorer [https://ropsten.etherscan.io/](https://ropsten.etherscan.io/)
+  - First deployed smart contract [https://ropsten.etherscan.io/address/0x5faE1243c0D292d7FdA51fc08872D8e3C25d81C0](https://ropsten.etherscan.io/address/0x5faE1243c0D292d7FdA51fc08872D8e3C25d81C0)
 
 ### Bugs
 - [https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation](https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation)
@@ -70,6 +78,11 @@ App to
 - PolygonScan - Blockchain explorer to support high transaction activity [https://polygonscan.com/](https://polygonscan.com/)
 - Ganache - local Ethereum network for development (equivalent of Hardhat Network)
 - Infura/Alcehmy/Moralis - Blockchain Node Providers so developers do not need to set up and manage their own blockchain nodes. (I used Infura)
+- ETH2 - Ethereum 2.0 to use PoS as opposed to original ETH which uses PoW.
+- PoW (Proof of Work) - Consensus mechanism to validate transactions and mint new currency by having miners calculate next valid hash for given transaction and broadcast it to the network. Therefore, computational power enables miners to get ahead of each other.
+- PoS (Proof of Stakes) - Consensus mechanism to validate transactions and mint new currency. Instead of computing power, network substitutes staking for computational ppower and individual's mining ability is randomized by network.
+- PoA (Proof of Authority) - Consenus mechanism for test networks where authorized users have full control.
+- WSL (Windows Subsystem for Linux) - setup info here [https://docs.microsoft.com/en-us/windows/wsl/install](https://docs.microsoft.com/en-us/windows/wsl/install)
 
 ## Hardhat README
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
