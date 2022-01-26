@@ -56,6 +56,11 @@ App uses two contracts deployed to Ropsten TestNet (Greeter and SimpleStorage) a
 - npx hardhat run scripts/deploy.js --network ropsten
 - Verified deployed contract in Etherscan Ropsten Testnet Explorer [https://ropsten.etherscan.io/](https://ropsten.etherscan.io/)
   - First deployed smart contract [https://ropsten.etherscan.io/address/0x5faE1243c0D292d7FdA51fc08872D8e3C25d81C0](https://ropsten.etherscan.io/address/0x5faE1243c0D292d7FdA51fc08872D8e3C25d81C0)
+- Wrote up frontend
+  - Installed Chakra UI - ```npm i @chakra-ui/react @emotion/react@^11 @emotion/styled@^11 framer-motion@^5```
+  - Added ChakraProvider to _app for Next.js to load styles
+  - Wrote Header and then Display for both contracts in index.js
+  - Used React Error Boundaries to localize Contract errors
 
 ### Bugs
 - [https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation](https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation)
