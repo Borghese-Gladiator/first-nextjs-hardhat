@@ -1,4 +1,4 @@
-function ErrorFallback({ error, resetErrorBoundary }) {
+export default function ErrorFallback({ error, resetErrorBoundary }) {
   return (
     <Alert status='success'>
       <AlertIcon />
@@ -12,5 +12,3 @@ function ErrorFallback({ error, resetErrorBoundary }) {
     </Alert>
   );
 };
-
-return ErrorFallback;
