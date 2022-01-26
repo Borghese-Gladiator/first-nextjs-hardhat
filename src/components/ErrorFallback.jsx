@@ -3,6 +3,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Box,
   CloseButton
 } from '@chakra-ui/react';
 
