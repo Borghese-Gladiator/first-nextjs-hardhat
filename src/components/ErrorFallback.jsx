@@ -1,3 +1,12 @@
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton
+} from '@chakra-ui/react';
+
+
 export default function ErrorFallback({ error, resetErrorBoundary }) {
   return (
     <Alert status='success'>
