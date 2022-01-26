@@ -1,28 +1,28 @@
 import Head from 'next/head'
 import { useState } from "react";
 import Navbar from "../src/components/Navbar";
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from "../src/components/ErrorFallback";
 import {
   Heading,
   Box,
   Flex,
   Stack,
   HStack,
-  Spacer,
   Button,
   Text,
   FormControl,
   Input,
 } from '@chakra-ui/react';
 
-
-// 
-
-const textOneLineStyle = { whiteSpace:"nowrap" }
+const textOneLineStyle = { whiteSpace: "nowrap" }
+const defaultGreeting = "";
+const defaultStorageValue = 0;
 
 export default function Home({ contractList }) {
   console.log(contractList);
-  const [greeting, setGreeting] = useState("");
-  const [storageValue, setStorageValue] = useState(1);
+  const [greeting, setGreeting] = useState(defaultGreeting);
+  const [storageValue, setStorageValue] = useState(defaultStorageValue);
 
   const operationList = [
     { text: "+2", operate: (num) => num + 2 },
@@ -45,56 +45,65 @@ export default function Home({ contractList }) {
       <main>
         <Navbar />
         <Flex direction="column" justify="center" alignItems="center">
-          <Box
-            minWidth={"10rem"}
-            borderWidth={2}
-            mt={3}
-            p={3}
-            width={[
-              '100%', // 0-30em
-              '80%', // 30em-48em
-              '60%', // 48em-62em
-              '40%', // 62em+
-            ]}
+          <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onReset={() => setGreeting(defaultGreeting)}
           >
-            <Stack>
-              <Heading>Greeter</Heading>
-              <Text p>Current greeting: {greeting}</Text>
-              <form onSubmit={handleSubmitGreeting}>
-                <FormControl isRequired>
-                  <Flex alignItems="center" m={1}>
-                    <Text style={textOneLineStyle}>Set Greeting</Text>
-                    <Box pl={1} />
-                    <Input placeholder={greeting} size="lg" onChange={event => setGreeting(event.target.value)} />
-                    <Button>Submit</Button>
-                  </Flex>
-                </FormControl>
-              </form>
-            </Stack>
-          </Box>
-
-          <Box
-            minWidth={"10rem"}
-            borderWidth={2}
-            mt={3}
-            p={3}
-            width={[
-              '100%', // 0-30em
-              '80%', // 30em-48em
-              '60%', // 48em-62em
-              '40%', // 62em+
-            ]}
+            <Box
+              minWidth={"10rem"}
+              borderWidth={2}
+              mt={3}
+              p={3}
+              width={[
+                '100%', // 0-30em
+                '80%', // 30em-48em
+                '60%', // 48em-62em
+                '40%', // 62em+
+              ]}
+            >
+              <Stack>
+                <Heading>Greeter</Heading>
+                <Text p>Current greeting: {greeting}</Text>
+                <form onSubmit={handleSubmitGreeting}>
+                  <FormControl isRequired>
+                    <Flex alignItems="center" m={1}>
+                      <Text style={textOneLineStyle}>Set Greeting</Text>
+                      <Box pl={1} />
+                      <Input placeholder={greeting} size="lg" onChange={event => setGreeting(event.target.value)} />
+                      <Button>Submit</Button>
+                    </Flex>
+                  </FormControl>
+                </form>
+              </Stack>
+            </Box>
+          </ErrorBoundary>
+          <ErrorBoundary
+            FallbackComponent={ErrorFallback}
+            onReset={() => setStorageValue(defaultStorageValue)}
           >
-            <Stack>
-              <Heading>SimpleStorage</Heading>
-              <Text p>Current value: {storageValue}</Text>
-              <HStack>
-                {operationList.map(({ text, operate }, idx) =>
-                  <Button key={`operate-btn-${idx}`} onClick={() => setStorageValue(operate(storageValue))}>{text}</Button>
-                )}
-              </HStack>
-            </Stack>
-          </Box>
+            <Box
+              minWidth={"10rem"}
+              borderWidth={2}
+              mt={3}
+              p={3}
+              width={[
+                '100%', // 0-30em
+                '80%', // 30em-48em
+                '60%', // 48em-62em
+                '40%', // 62em+
+              ]}
+            >
+              <Stack>
+                <Heading>SimpleStorage</Heading>
+                <Text p>Current value: {storageValue}</Text>
+                <HStack>
+                  {operationList.map(({ text, operate }, idx) =>
+                    <Button key={`operate-btn-${idx}`} onClick={() => setStorageValue(operate(storageValue))}>{text}</Button>
+                  )}
+                </HStack>
+              </Stack>
+            </Box>
+          </ErrorBoundary>
         </Flex>
       </main>
     </div >
