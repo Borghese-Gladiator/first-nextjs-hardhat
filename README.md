@@ -61,9 +61,15 @@ App uses two contracts deployed to Ropsten TestNet (Greeter and SimpleStorage) a
   - Added ChakraProvider to _app for Next.js to load styles
   - Wrote Header and then Display for both contracts in index.js
   - Used React Error Boundaries to localize Contract errors
+  - Add icons - ```npm i @chakra-ui/icons```
 
 ### Bugs
 - [https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation](https://stackoverflow.com/questions/66449576/importing-ethers-via-hardhat-fails-despite-official-testing-documentation)
+- ```{"code":-32602,"message":"Trying to send a raw transaction with an invalid chainId. The expected chainId is 31337"``` - fix by updating hardhat.config.js (missing ```hardhat: { chainId: 337 }```) [https://hardhat.org/metamask-issue.html](https://hardhat.org/metamask-issue.html)
+
+#### Takeaways
+- Learned that when testing, NAME MY ACCOUNTS!! Currently, I don't know which test account to interact with which network
+- Use react-query to expedite frontend code
 
 #### Resources
 - Mainly followed here: [https://dev.to/dabit3/the-complete-guide-to-full-stack-ethereum-development-3j13](https://dev.to/dabit3/the-complete-guide-to-full-stack-ethereum-development-3j13)
