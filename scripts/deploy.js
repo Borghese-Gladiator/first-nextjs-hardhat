@@ -15,9 +15,16 @@ async function main() {
 
   // We get the contract to deploy
   const Greeter = await hre.ethers.getContractFactory("Greeter");
+  const SimpleStorage = await hre.ethers.getContractFactory("SimpleStorage");
+  const Token = await hre.ethers.getContractFactory("Token");
+  
   const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const simpleStorage = await SimpleStorage.deploy("Hello Simple Storage");
+  const token = await Token.deploy("Hello Token");
 
   await greeter.deployed();
+  await simpleStorage.deployed();
+  await token.deployed();
 
   console.log("Greeter deployed to:", greeter.address);
 }
