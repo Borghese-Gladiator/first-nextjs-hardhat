@@ -3,8 +3,6 @@ pragma solidity ^0.8.2;
 
 contract SimpleStorage {
   uint256 storedData;
-
-  event VoteCast(address voter, uint votes, bool inFavor);
 	
   function get() public view returns (uint) {
     return storedData;
