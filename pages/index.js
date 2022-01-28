@@ -1,22 +1,55 @@
+
+// Call smart contract on network
+import { ethers } from 'ethers'
+import Greeter from '../src/artifacts/contracts/Greeter.sol/Greeter.json'
 import { useState } from "react";
-import Head from 'next/head';
-import Navbar from "../src/components/Navbar";
+// Frontend components
+import RootLayout from '../src/components/RootLayout';
 import NoWalletDetected from '../src/components/NoWalletDetected';
 import GreeterDisplay from '../src/components/GreeterDisplay';
 import SimpleStorageDisplay from '../src/components/SimpleStorageDisplay';
-import {
-  Flex,
-} from '@chakra-ui/react';
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const defaultGreeting = "";
-const defaultStorageValue = 0;
-
+// const greeterAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+const greeterAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 export default function Home({ contractList }) {
   console.log(contractList);
-  const [greeting, setGreeting] = useState(defaultGreeting);
-  const [storageValue, setStorageValue] = useState(defaultStorageValue);
+  const [greeting, setGreeting] = useState();
+  const [storageValue, setStorageValue] = useState();
+
+  // request access to the user's MetaMask account
+  async function requestAccount() {
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+  }
+
+  // call the smart contract, read the current greeting value
+  async function fetchGreeting() {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider)
+      try {
+        const data = await contract.greet()
+        console.log('data: ', data)
+      } catch (err) {
+        console.log("Error: ", err)
+      }
+    }
+  }
+
+  // call the smart contract, send an update
+  async function updateGreeting() {
+    if (!greeting) return
+    if (typeof window.ethereum !== 'undefined') {
+      await requestAccount()
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+      const contract = new ethers.Contract(greeterAddress, Greeter.abi, signer)
+      const transaction = await contract.setGreeting(greeting)
+      await transaction.wait()
+      fetchGreeting()
+    }
+  }
 
   const handleSubmitGreeting = async (e) => {
     e.preventDefault();
@@ -32,32 +65,26 @@ export default function Home({ contractList }) {
     return newValue;
   }
 
+  if (typeof window !== "undefined" && typeof window.ethereum === "undefined") {
+    return (
+      <RootLayout>
+        <NoWalletDetected />
+      </RootLayout>
+    )
+  }
+
   return (
-    <div>
-      <Head>
-        <title>First DApp</title>
-        <meta name="description" content="This DApp uses two contracts deployed to Ropsten TestNet (Greeter and SimpleStorage) and displays frontend to use the contracts. Only my wallet address has been AllowListed in Infura" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        <Navbar />
-        <Flex direction="column" justify="center" alignItems="center" style={{ minHeight: "80vh" }}>
-          {
-            typeof window !== "undefined" && typeof window.ethereum === "undefined"
-              ? <NoWalletDetected />
-              :
-              <>
-                <GreeterDisplay greeting={greeting} setGreeting={setGreeting} handleSubmitGreeting={handleSubmitGreeting} />
-                <SimpleStorageDisplay
-                  storageValue={storageValue}
-                  setStorageValue={setStorageValue}
-                  handleSubmitStorageValue={handleSubmitStorageValue}
-                />
-              </>
-          }
-        </Flex>
-      </main>
-    </div>
+    <RootLayout>
+      <button onClick={fetchGreeting}>Fetch Greeting</button>
+      <button onClick={updateGreeting}>Set Greeting</button>
+      <input onChange={e => setGreeting(e.target.value)} placeholder="Set greeting" />
+      <GreeterDisplay greeting={greeting} setGreeting={setGreeting} handleSubmitGreeting={handleSubmitGreeting} />
+      <SimpleStorageDisplay
+        storageValue={storageValue}
+        setStorageValue={setStorageValue}
+        handleSubmitStorageValue={handleSubmitStorageValue}
+      />
+    </RootLayout>
   )
 }
 
