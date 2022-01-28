@@ -1,8 +1,8 @@
-import Head from 'next/head'
 import { useState } from "react";
+import Head from 'next/head';
 import Navbar from "../src/components/Navbar";
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallback from "../src/components/ErrorFallback";
+import GreeterDisplay from '../src/components/GreeterDisplay';
+import SimpleStorageDisplay from '../src/components/SimpleStorageDisplay';
 import {
   Heading,
   Box,
@@ -18,20 +18,13 @@ import {
   Center,
   Container
 } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const textOneLineStyle = { whiteSpace: "nowrap" }
 const defaultGreeting = "";
 const defaultStorageValue = 0;
-const operationList = [
-  { text: "+2", operate: (num) => num + 2 },
-  { text: "-2", operate: (num) => num - 2 },
-  { text: "*2", operate: (num) => num * 2 },
-  { text: "/2", operate: (num) => num / 2 },
-]
 
-function NotConfiguredMetaMaskDisplay() {
+function NoWalletDetected() {
   return (
     <Container
       maxW='container.sm'
@@ -67,78 +60,6 @@ function NotConfiguredMetaMaskDisplay() {
   )
 }
 
-function GreeterContractDisplay({ greeting, setGreeting, handleSubmitGreeting }) {
-  return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => setGreeting(defaultGreeting)}
-    >
-      <Box
-        minWidth={"10rem"}
-        borderWidth={2}
-        mt={3}
-        p={3}
-        width={[
-          '100%', // 0-30em
-          '80%', // 30em-48em
-          '60%', // 48em-62em
-          '40%', // 62em+
-        ]}
-      >
-        <Stack>
-          <Heading>Greeter</Heading>
-          <Text p>Current greeting: {greeting}</Text>
-          <form onSubmit={handleSubmitGreeting}>
-            <FormControl isRequired>
-              <Flex alignItems="center" m={1}>
-                <Text style={textOneLineStyle}>Set Greeting</Text>
-                <Box pl={1} />
-                <Input name="greeting" placeholder={greeting} size="lg" />
-                <Button type="submit">Submit</Button>
-              </Flex>
-            </FormControl>
-          </form>
-        </Stack>
-      </Box>
-    </ErrorBoundary>
-  )
-}
-
-function SimpleStorageContractDisplay({ storageValue, setStorageValue, handleSubmitStorageValue }) {
-  return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => setStorageValue(defaultStorageValue)}
-    >
-      <Box
-        minWidth={"10rem"}
-        borderWidth={2}
-        mt={3}
-        p={3}
-        width={[
-          '100%', // 0-30em
-          '80%', // 30em-48em
-          '60%', // 48em-62em
-          '40%', // 62em+
-        ]}
-      >
-        <Stack>
-          <Heading>SimpleStorage</Heading>
-          <Text p>Current value: {storageValue}</Text>
-          <HStack>
-            {operationList.map(({ text, operate }, idx) =>
-              <Button key={`operate-btn-${idx}`} onClick={() => {
-                handleSubmitStorageValue(operate(storageValue)).then((val) => {
-                  setStorageValue(val)
-                })
-              }}>{text}</Button>
-            )}
-          </HStack>
-        </Stack>
-      </Box>
-    </ErrorBoundary>
-  )
-}
 
 export default function Home({ contractList }) {
   console.log(contractList);
@@ -166,25 +87,24 @@ export default function Home({ contractList }) {
         <meta name="description" content="This DApp uses two contracts deployed to Ropsten TestNet (Greeter and SimpleStorage) and displays frontend to use the contracts. Only my wallet address has been AllowListed in Infura" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      <main>
         <Navbar />
-        <main>
+        <Flex direction="column" justify="center" alignItems="center" style={{ minHeight: "80vh" }}>
           {
-            typeof window !== "undefined" && typeof window.ethereum !== "undefined"
-              ?
-              <NotConfiguredMetaMaskDisplay />
+            typeof window !== "undefined" && typeof window.ethereum === "undefined"
+              ? <NoWalletDetected />
               :
               <>
-                <GreeterContractDisplay greeting={greeting} setGreeting={setGreeting} handleSubmitGreeting={handleSubmitGreeting} />
-                <SimpleStorageContractDisplay
+                <GreeterDisplay greeting={greeting} setGreeting={setGreeting} handleSubmitGreeting={handleSubmitGreeting} />
+                <SimpleStorageDisplay
                   storageValue={storageValue}
                   setStorageValue={setStorageValue}
                   handleSubmitStorageValue={handleSubmitStorageValue}
                 />
               </>
           }
-        </main>
-      </div>
+        </Flex>
+      </main>
     </div>
   )
 }
