@@ -1,3 +1,11 @@
+import {
+  VStack,
+  Button,
+  Text,
+  Link,
+  Container
+} from '@chakra-ui/react';
+
 export default function NoWalletDetected() {
   return (
     <Container
